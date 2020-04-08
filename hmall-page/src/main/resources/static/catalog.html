@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>分类-氢商城</title>
+    <link rel="stylesheet" type="text/css" href="asset/bootstrap/4.4/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/c-common.css">
+    <link rel="stylesheet" type="text/css" href="css/c-top-nav.css">
+    <link rel="stylesheet" type="text/css" href="css/c-btm-footer.css">
+    <link rel="stylesheet" type="text/css" href="css/v-catalog.css">
+</head>
+<body>
+<!--顶部导航栏-->
+<nav id="h-topNav" class="mb-4">
+    <div class="navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand" href="#">氢商城</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">首页 <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="catalog.html">分类</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="USER/order.html">订单</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="USER/cart.html">购物车</a>
+                </li>
+                <li class="nav-item" v-show="user==null">
+                    <a class="nav-link" href="login.html">登录</a>
+                </li>
+                <li class="nav-item dropdown" v-show="user!=null">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarUser" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{user!=null?user.username:''}}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarUser">
+                        <a class="dropdown-item" href="USER/account.html">个人信息</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" v-on:click="logout" href="javascript:;">注销登录</a>
+                    </div>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0" id="searchForm" v-on:submit="searchFormSubmit">
+                <input class="form-control mr-sm-2" type="search" placeholder="关键字" aria-label="Search">
+                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">搜索</button>
+            </form>
+        </div>
+    </div>
+</nav>
+<main id="catalogBox" class="container mb-4">
+    <div class="row">
+        <div class="col-3">
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <!--                <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Home</a>-->
+                <!--                <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Profile</a>-->
+                <!--                <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">Messages</a>-->
+                <!--                <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</a>-->
+
+                <a v-for="(catalog,i) in catalogs" v-bind:class="['nav-link',i==0?'active':'']" v-bind:id="'baseCatalog-'+catalog.id+'-tab'"
+                   data-toggle="pill" v-bind:href="'#baseCatalog-'+catalog.id" role="tab"
+                   v-bind:aria-controls="'baseCatalog-'+catalog.id" aria-selected="true">{{catalog.name}}</a>
+            </div>
+        </div>
+        <div class="col-9">
+            <div class="tab-content" id="v-pills-tabContent">
+                <!--                <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">...</div>-->
+                <!--                <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">...</div>-->
+                <!--                <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">...</div>-->
+                <!--                <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">...</div>-->
+
+                <div v-for="(catalog,i) in catalogs" v-bind:class="['tab-pane','fade','show',i==0?'active':'']"
+                     v-bind:h-catalog1Id="catalog.id" v-bind:id="'baseCatalog-'+catalog.id" role="tabpanel"
+                     v-bind:aria-labelledby="'baseCatalog-'+catalog.id+'-tab'">
+                    <div class="row ml-0 mr-0" v-for="(catalog2,i) in catalog.catalog2s">
+                        <div class="col-auto mt-2 mb-2">
+                            {{catalog2.name}}
+                        </div>
+                        <div class="col-auto mt-2 mb-2" v-for="(catalog3,i) in catalog2.catalog3s">
+                            <a href="javascript:;" v-on:click="catalog3Click(catalog3.id,catalog3.name)">{{catalog3.name}}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<footer id="h-btmFooter" class="text-muted">
+    <div class="container">
+        <p class="float-right">
+            <a href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">回到顶部</font></font></a>
+        </p>
+        <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">氢商城</font></font></p>
+        <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">&copy;2020</font></font></p>
+    </div>
+</footer>
+
+
+<script type="text/javascript" src="asset/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="asset/jquery.serializejson.min.js"></script>
+<script type="text/javascript" src="asset/popper.min.js"></script>
+<script type="text/javascript" src="asset/bootstrap/4.4/bootstrap.min.js"></script>
+<script type="text/javascript" src="asset/vue.js"></script>
+<script type="text/javascript" src="asset/axios.min.js"></script>
+<script type="text/javascript" src="js/c-util.js"></script>
+<script type="text/javascript" src="js/c-api.js"></script>
+<script type="text/javascript" src="js/c-top-nav-controller.js"></script>
+<script type="text/javascript" src="js/v-catalog.js"></script>
+<script type="text/javascript" src="js/v-catalog-controller.js"></script>
+</body>
+</html>

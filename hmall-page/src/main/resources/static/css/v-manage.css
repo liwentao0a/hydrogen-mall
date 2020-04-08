@@ -1,0 +1,31 @@
+@media screen and (min-width: 992px){
+    main .col-lg-3 {
+        position: fixed;
+        top: 56px;
+        bottom: 0;
+        left: 0;
+        overflow-y: scroll;
+        border-right: 1px solid rgba(0,0,0,.125);
+    }
+    main .col-lg-3 .card{
+        border: 0;
+    }
+    .card-header{
+        border: 0;
+    }
+}
+main .col-lg-3{
+    padding: 0;
+    background-color: #F6F8FA;
+}
+main .col-lg-3::-webkit-scrollbar{
+    display: none;
+}
+main .col-lg-3 .card{
+    border-radius: 0;
+    border-right:0;
+    border-left: 0;
+}
+.card-header{
+    background-color: #F6F8FA;
+}

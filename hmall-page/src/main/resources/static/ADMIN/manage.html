@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>用户管理-氢商城</title>
+    <link rel="stylesheet" type="text/css" href="../asset/bootstrap/4.4/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/c-common.css">
+    <link rel="stylesheet" type="text/css" href="../css/c-top-nav.css">
+    <link rel="stylesheet" type="text/css" href="../css/v-manage.css">
+</head>
+<body>
+<!--顶部导航栏-->
+<nav id="h-topNav" class="shadow-sm" style="position: fixed;top: 0;left: 0;right: 0;z-index: 100;">
+    <div class="navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand" href="#">氢商城后台管理系统</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+<!--                        <li class="nav-item">-->
+<!--                            <a class="nav-link" href="#">首页 <span class="sr-only">(current)</span></a>-->
+<!--                        </li>-->
+<!--                        <li class="nav-item">-->
+<!--                            <a class="nav-link" href="#">立即注册</a>-->
+<!--                        </li>-->
+                        <li class="nav-item dropdown" v-show="user!=null">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarUser" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {{user!=null?user.username:''}}
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarUser">
+                                <a class="dropdown-item" href="USER/account.html">个人信息</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" v-on:click="logout" href="javascript:;">注销登录</a>
+                            </div>
+                        </li>
+                    </ul>
+                    <form class="form-inline my-2 my-lg-0" id="searchForm" v-on:submit="searchFormSubmit">
+                        <input class="form-control mr-sm-2" type="search" placeholder="关键字" aria-label="Search">
+                        <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">搜索</button>
+                    </form>
+                </div>
+    </div>
+</nav>
+<main class="">
+    <div class="row" style="padding-top: 56px;margin-right: 0;margin-left: 0;">
+        <div class="col-lg-3">
+            <div class="accordion" id="accordionExample">
+                <div class="card">
+                    <div class="card-header" id="headingOne">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                用户管理
+                            </button>
+                        </h2>
+                    </div>
+
+                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                        <div class="card-body">
+                            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">用户信息</a>
+                                <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">用户权限</a>
+                                <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">添加用户</a>
+                                <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" id="headingTwo">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                商品管理
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                        <div class="card-body">
+                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" id="headingThree">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                库存管理
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                        <div class="card-body">
+                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9 offset-lg-3">
+            <div class="tab-content" id="v-pills-tabContent" style="padding-top: 15px">
+                <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                    <div class="table-responsive-lg">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>用户ID</th>
+                                    <th>用户名</th>
+                                    <th>用户昵称</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{id}}</td>
+                                    <td>{{username}}</td>
+                                    <td>{{nickname}}</td>
+                                    <td style="white-space: nowrap;">
+                                        <button type="button" class="btn btn-primary">编辑</button>
+                                        <button type="button" class="btn btn-danger">删除</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">2</div>
+                <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">3</div>
+                <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">4</div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+
+
+
+<script type="text/javascript" src="../asset/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="../asset/jquery.serializejson.min.js"></script>
+<script type="text/javascript" src="../asset/popper.min.js"></script>
+<script type="text/javascript" src="../asset/bootstrap/4.4/bootstrap.min.js"></script>
+<script type="text/javascript" src="../asset/vue.js"></script>
+<script type="text/javascript" src="../asset/axios.min.js"></script>
+<script type="text/javascript" src="../js/c-util.js"></script>
+<script type="text/javascript" src="../js/c-api.js"></script>
+<script type="text/javascript" src="../js/v-manage-controller.js"></script>
+</body>
+</html>

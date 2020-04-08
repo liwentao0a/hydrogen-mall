@@ -1,0 +1,37 @@
+ul{
+    margin: 0;
+    padding: 0;
+}
+li{
+    list-style: none;
+}
+ol{
+    margin: 0;
+    padding: 0;
+}
+h1{
+    margin: 0;
+}
+
+
+
+.h-container{
+    min-width: 960px;
+    margin: 0 auto;
+}
+.fl{
+    float: left;
+}
+.fr{
+    float: right;
+}
+.clear::after{
+    content: "";
+    display: block;
+    height: 0;
+    visibility: hidden;
+    clear: both;
+}
+.tac{
+    text-align: center;
+}

@@ -1,0 +1,6 @@
+#catalogBox>.row>.col-3{
+    max-height: 512px;
+}
+#catalogBox>.row>.col-3{
+    overflow-y: scroll;
+}

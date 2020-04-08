@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: hmall-product-service
+  cloud:
+    config:
+      name: base,base-service,${spring.application.name}
+      profile: dev
+      label: master
+      discovery:
+        service-id: hmall-config
+        enabled: true
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${server.port}
+    prefer-ip-address: true
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://root:root@localhost:9001/eureka/

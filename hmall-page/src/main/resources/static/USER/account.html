@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>账户-氢商城</title>
+    <link rel="stylesheet" type="text/css" href="../asset/bootstrap/4.4/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/c-common.css">
+    <link rel="stylesheet" type="text/css" href="../css/c-top-nav.css">
+    <link rel="stylesheet" type="text/css" href="../css/c-btm-footer.css">
+</head>
+<body>
+<!--顶部导航栏-->
+<nav id="h-topNav" class="mb-4">
+    <div class="navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand" href="#">氢商城</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="../index.html">首页 <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="../catalog.html">分类</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="order.html">订单</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="cart.html">购物车</a>
+                </li>
+                <li class="nav-item" v-show="user==null">
+                    <a class="nav-link" href="../login.html">登录</a>
+                </li>
+                <li class="nav-item dropdown active" v-show="user!=null">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarUser" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{user!=null?user.username:''}}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarUser">
+                        <a class="dropdown-item" href="account.html">个人信息</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" v-on:click="logout" href="javascript:;">注销登录</a>
+                    </div>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0" id="searchForm" v-on:submit="searchFormSubmit">
+                <input class="form-control mr-sm-2" type="search" placeholder="关键字" aria-label="Search">
+                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">搜索</button>
+            </form>
+        </div>
+    </div>
+</nav>
+<main class="container mb-4">
+    <div class="row" id="accountInfoBox">
+        <div class="col-3">
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a class="nav-link active" id="v-pills-userInfo-tab" data-toggle="pill" href="#v-pills-userInfo" role="tab" aria-controls="v-pills-userInfo" aria-selected="true" v-on:click="getUserInfo">个人信息</a>
+                <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false" v-on:click="listUserReceiveAddress">收货地址</a>
+            </div>
+        </div>
+        <div class="col-9">
+            <div class="tab-content" id="v-pills-tabContent">
+                <div class="tab-pane fade show active" id="v-pills-userInfo" role="tabpanel" aria-labelledby="v-pills-userInfo-tab">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <img v-bind:src="userInfo.avatarUrl" style="width: 140px;height: 140px;border-radius: 50%;"/>
+                        </li>
+                        <li class="list-group-item">
+                            {{userInfo.username}}
+                        </li>
+                        <li class="list-group-item">
+                            {{userInfo.nickname}}
+                        </li>
+                        <li class="list-group-item">
+                            {{userInfo.gender==1?'男':'女'}}
+                        </li>
+                        <li class="list-group-item">
+                            {{userInfo.phone}}
+                        </li>
+                        <li class="list-group-item">
+                            {{userInfo.email}}
+                        </li>
+<!--                        <li class="list-group-item">-->
+<!--                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delAccountModal">删除账户</button>-->
+<!--                        </li>-->
+                    </ul>
+                    <div class="modal fade" id="delAccountModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <form id="delAccountForm" class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">删除账户</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">密码</label>
+                                        <input type="password" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                        <small id="emailHelp" class="form-text text-muted">输入密码以删除</small>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                    <button type="submit" class="btn btn-danger">删除</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addAddressModal">新增收货地址</button>
+                        </li>
+                        <li class="list-group-item" v-for="(receiveAddress,i) in userReceiveAddress">
+                            <div class="row">
+                                <div class="col-lg-10">
+                                    <div>
+                                        {{receiveAddress.name}}
+                                        <small>{{receiveAddress.phone}}</small>
+                                        <span class="badge badge-primary" v-if="receiveAddress.defaultStatus==1">默认</span>
+                                    </div>
+                                    <div>
+                                        {{receiveAddress.province}}
+                                        {{receiveAddress.city}}
+                                        {{receiveAddress.region}}
+                                        {{receiveAddress.detailAddress}}
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 text-right">
+                                    <button type="button" class="btn btn-link" v-on:click="receiveAddressDelBtnClick(receiveAddress.id)">删除</button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<footer id="h-btmFooter" class="text-muted">
+    <div class="container">
+        <p class="float-right">
+            <a href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">回到顶部</font></font></a>
+        </p>
+        <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">氢商城</font></font></p>
+        <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">&copy;2020</font></font></p>
+    </div>
+</footer>
+
+<!-- Modal -->
+<div class="modal fade" id="addAddressModal" tabindex="-1" role="dialog" aria-labelledby="addAddressModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
+        <form class="modal-content" v-on:submit="addAddressFormSubmit">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addAddressModalLabel">新增收货地址</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group col-4">
+                        <label>省</label>
+                        <select class="form-control" name="province" required v-model="provinceSelected" v-on:change="provinceSelectChange">
+                            <option v-for="(p,i) in provinceCityArea" v-bind:value="p.provinceName">{{p.provinceName}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-4">
+                        <label>市</label>
+                        <select class="form-control" name="city" required v-model="citySelected" v-on:change="citySelectChange">
+                            <option v-for="(c,i) in cityArea" v-if="c.provinceName==provinceSelected" v-bind:value="c.cityName">{{c.cityName}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-4">
+                        <label>区</label>
+                        <select class="form-control" name="region" required v-model="areaSelected">
+                            <option v-for="(a,i) in area" v-if="a.cityName==citySelected" v-bind:value="a.areaName">{{a.areaName}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>详细地址</label>
+                    <input type="text" class="form-control" name="detailAddress" placeholder="xx镇xx村xx路xx号" required>
+                </div>
+                <div class="form-group">
+                    <label>收货人姓名</label>
+                    <input type="text" class="form-control" name="name" placeholder="姓名" required>
+                </div>
+                <div class="form-group">
+                    <label>收货人电话</label>
+                    <input type="tel" class="form-control" name="phone" placeholder="电话" required>
+                </div>
+                <div class="form-group form-check">
+                    <input type="hidden" name="defaultStatus" v-bind:value="defaultStatusCheckbox?'1':'0'">
+                    <input type="checkbox" class="form-check-input" v-model="defaultStatusCheckbox">
+                    <label class="form-check-label">默认</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <button type="submit" class="btn btn-primary">保存</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+<script type="text/javascript" src="../asset/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="../asset/jquery.serializejson.min.js"></script>
+<script type="text/javascript" src="../asset/popper.min.js"></script>
+<script type="text/javascript" src="../asset/bootstrap/4.4/bootstrap.min.js"></script>
+<script type="text/javascript" src="../asset/vue.js"></script>
+<script type="text/javascript" src="../asset/axios.min.js"></script>
+<script type="text/javascript" src="../js/c-util.js"></script>
+<script type="text/javascript" src="../js/c-api.js"></script>
+<script type="text/javascript" src="../js/c-top-nav-controller.js"></script>
+<script type="text/javascript" src="../js/c-add-address-modal-controller.js"></script>
+<script type="text/javascript" src="../js/v-account-controller.js"></script>
+</body>
+</html>

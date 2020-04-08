@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>注册-氢商城</title>
+    <link rel="stylesheet" type="text/css" href="asset/bootstrap/4.4/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/c-common.css">
+    <link rel="stylesheet" type="text/css" href="css/c-top-nav.css">
+    <link rel="stylesheet" type="text/css" href="css/v-registered.css">
+</head>
+<body>
+<!--顶部导航栏-->
+<nav id="h-topNav">
+    <div class="navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand" href="#">氢商城</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">首页 <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="login.html">登录</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!--注册-->
+<form id="registeredForm" class="container pt-3" action="#" v-on:submit="registeredFormSubmit">
+    <div class="mb-3">
+        <div class="text-center" style="position: relative;width: 140px;margin: 0 auto;">
+            <img v-bind:src="iconSrc" style="width: 140px;height: 140px;border-radius: 50%;"/>
+            <input type="file" accept=".png,.jpg,.jpeg"
+                   style="width: 140px;height: 140px;border-radius: 50%;opacity: 0;position: absolute;top: 0;left: 0;" v-on:change="iconChange()" id="iconInput">
+            <input type="hidden" name="avatarUrl" v-bind:value="avatarUrl">
+            <label>{{iconTips}}</label>
+        </div>
+    </div>
+    <div class="mb-3 col-md-8 offset-md-2 row">
+        <div class="col-md-12 col-lg-6 mb-3">
+            <label for="userNameInput">用户名</label>
+            <input type="text" class="form-control" id="userNameInput" name="username" placeholder="用户名" required>
+        </div>
+        <div class="col-md-12 col-lg-6 mb-3">
+            <label for="nicknameInput">昵称</label>
+            <input type="text" class="form-control" id="nicknameInput" name="nickname" placeholder="昵称" required>
+        </div>
+        <div class="col-md-12 col-lg-6 mb-3">
+            <label for="passwordInput">密码</label>
+            <input type="password" class="form-control" id="passwordInput" name="password" placeholder="密码" required>
+        </div>
+        <div class="col-md-12 col-lg-6 mb-3">
+            <label for="confirmPasswordInput">确认密码</label>
+            <input type="password" class="form-control" id="confirmPasswordInput"
+                   placeholder="确认密码" required>
+        </div>
+        <div class="col-md-12 col-lg-12 mb-3">
+            <label>性别</label>
+            <div class="row row-cols-lg-6 row-cols-sm-4">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="gender" id="maleRadios" value="1"
+                           checked required>
+                    <label class="form-check-label" for="maleRadios">
+                        男
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="gender" id="femaleRadios" value="0">
+                    <label class="form-check-label" for="femaleRadios">
+                        女
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-lg-6 mb-3">
+            <label for="phoneInput">电话</label>
+            <input type="tel" class="form-control" id="phoneInput" name="phone" placeholder="电话" required>
+        </div>
+        <div class="col-md-12 col-lg-6 mb-3">
+            <label for="emailInput">邮箱</label>
+            <input type="email" class="form-control" id="emailInput" name="email" placeholder="邮箱" required>
+        </div>
+        <div class="text-center col-md-12 pt-3">
+            <button type="submit" class="btn btn-primary btn-lg col-md-12 col-lg-6">立即注册</button>
+            <p class="mt-5 mb-3 text-muted">&copy; 2020</p>
+        </div>
+    </div>
+</form>
+
+
+<script type="text/javascript" src="asset/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="asset/jquery.serializejson.min.js"></script>
+<script type="text/javascript" src="asset/popper.min.js"></script>
+<script type="text/javascript" src="asset/bootstrap/4.4/bootstrap.min.js"></script>
+<script type="text/javascript" src="asset/vue.js"></script>
+<script type="text/javascript" src="asset/axios.min.js"></script>
+<script type="text/javascript" src="js/c-util.js"></script>
+<script type="text/javascript" src="js/c-api.js"></script>
+<script type="text/javascript" src="js/v-registered-controller.js"></script>
+</body>
+</html>

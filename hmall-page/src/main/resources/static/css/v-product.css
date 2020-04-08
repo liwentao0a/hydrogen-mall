@@ -1,0 +1,62 @@
+.card .card-body{
+    position: relative;
+}
+.card .card-body>div{
+    overflow-x: scroll;
+    white-space: nowrap;
+}
+.card .card-body>div::-webkit-scrollbar{
+    display: none;
+}
+
+
+
+.list-group-item{
+    padding: .5rem 1rem;
+}
+.list-group-horizontal .list-group-item:first-child,
+.list-group-horizontal .list-group-item+.list-group-item{
+    /*border: none;*/
+    /*padding: .25rem;*/
+    border: 1px solid rgba(0,0,0,.125);
+    border-left-width:1px;
+    border-radius: .25rem;
+    margin-right: .5rem;
+    border: none;
+}
+.list-group-horizontal .list-group-item:first-child{
+    border: none;
+}
+
+
+#saleAttrBoxs{
+    border-top: 1px solid rgba(0,0,0,.125);
+    border-bottom: 1px solid rgba(0,0,0,.125);
+}
+.saleAttrBox{
+    margin: 0;
+}
+.saleAttrBox>*{
+    margin-left: 8px;
+    margin-right: 8px;
+    margin-top: .5rem;
+    margin-bottom: .5rem;
+}
+.saleAttrBox>*:first-child{
+    margin-left: 0;
+}
+.saleAttrBox a{
+    display: inline-block;
+    padding: 8px 12px;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: .25rem;
+}
+.saleAttrBox a.blueBorder{
+    border: 1px solid #007bff;
+}
+.saleAttrBox a.dashedBorder{
+    border: 1px dashed rgba(200,200,200,.5);
+}
+.saleAttrValueRadio{
+    display: none;
+}

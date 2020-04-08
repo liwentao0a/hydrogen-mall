@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>后台管理登录-氢商城</title>
+    <link rel="stylesheet" type="text/css" href="asset/bootstrap/4.4/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/c-common.css">
+    <link rel="stylesheet" type="text/css" href="css/c-top-nav.css">
+    <link rel="stylesheet" type="text/css" href="css/v-login.css">
+</head>
+<body>
+<!--顶部导航栏-->
+<nav id="h-topNav">
+    <div class="navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand" href="#">氢商城后台管理系统</a>
+<!--        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"-->
+<!--                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">-->
+<!--            <span class="navbar-toggler-icon"></span>-->
+<!--        </button>-->
+
+<!--        <div class="collapse navbar-collapse" id="navbarSupportedContent">-->
+<!--            <ul class="navbar-nav mr-auto">-->
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link" href="#">首页 <span class="sr-only">(current)</span></a>-->
+<!--                </li>-->
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link" href="#">立即注册</a>-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--        </div>-->
+    </div>
+</nav>
+<!--登录-->
+<main id="loginBox">
+    <form class="form-signin" v-on:submit="adminLoginFormSubmit">
+        <!--        <img class="mb-4" src="/docs/4.4/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">-->
+        <h1 class="mb-3" style="font-size: 58px;font-weight:normal;width: 72px;height: 72px;margin: 0 auto;color: #000;border: 1px #000 solid;border-radius: 50%;">H</h1>
+        <h1 class="h3 mb-3 font-weight-normal">请登录</h1>
+        <label for="inputUsername" class="sr-only">用户名</label>
+        <input type="text" id="inputUsername" class="form-control" name="username" placeholder="用户名" required autofocus
+            v-model="usernameInput">
+        <label for="inputPassword" class="sr-only">密码</label>
+        <input type="password" id="inputPassword" class="form-control" name="password" placeholder="密码" required>
+        <div class="checkbox mb-3">
+            <label>
+                <input type="checkbox" v-model="rememberMeCheckbox"> 记住我
+            </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
+        <p class="mt-5 mb-3 text-muted">&copy; 2020</p>
+    </form>
+</main>
+
+<script type="text/javascript" src="asset/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="asset/jquery.serializejson.min.js"></script>
+<script type="text/javascript" src="asset/popper.min.js"></script>
+<script type="text/javascript" src="asset/bootstrap/4.4/bootstrap.min.js"></script>
+<script type="text/javascript" src="asset/vue.js"></script>
+<script type="text/javascript" src="asset/axios.min.js"></script>
+<script type="text/javascript" src="js/c-util.js"></script>
+<script type="text/javascript" src="js/c-api.js"></script>
+<script  src="js/v-manage-login-controller.js"></script>
+</body>
+</html>

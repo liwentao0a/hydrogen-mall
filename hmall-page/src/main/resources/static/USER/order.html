@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>订单-氢商城</title>
+    <link rel="stylesheet" type="text/css" href="../asset/bootstrap/4.4/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/c-common.css">
+    <link rel="stylesheet" type="text/css" href="../css/c-top-nav.css">
+    <link rel="stylesheet" type="text/css" href="../css/c-btm-footer.css">
+</head>
+<body>
+<!--顶部导航栏-->
+<nav id="h-topNav" class="mb-4">
+    <div class="navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand" href="#">氢商城</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="../index.html">首页 <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="../catalog.html">分类</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="order.html">订单</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="cart.html">购物车</a>
+                </li>
+                <li class="nav-item" v-show="user==null">
+                    <a class="nav-link" href="../login.html">登录</a>
+                </li>
+                <li class="nav-item dropdown" v-show="user!=null">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarUser" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{user!=null?user.username:''}}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarUser">
+                        <a class="dropdown-item" href="account.html">个人信息</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" v-on:click="logout" href="javascript:;">注销登录</a>
+                    </div>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0" id="searchForm" v-on:submit="searchFormSubmit">
+                <input class="form-control mr-sm-2" type="search" placeholder="关键字" aria-label="Search">
+                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">搜索</button>
+            </form>
+        </div>
+    </div>
+</nav>
+<main class="container mb-4" id="orderBox">
+    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">全部订单</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">待付款</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">待发货</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="pills-c-tab" data-toggle="pill" href="#pills-c" role="tab" aria-controls="pills-c" aria-selected="false">待收货</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="pills-tabContent">
+        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+            <ul class="list-group mb-3" v-for="(order,i) in orders">
+                <li class="list-group-item">
+                    <div class="row d-none d-lg-flex">
+                        <div class="media col-lg-9 d-flex align-items-center">
+                            商品
+                        </div>
+                        <div class="col-lg-1 d-flex align-items-center">
+                            单价
+                        </div>
+                        <div class="col-lg-1 d-flex align-items-center">
+                            数量
+                        </div>
+                        <div class="col-lg-1 d-flex align-items-center">
+                            小计
+                        </div>
+                    </div>
+                </li>
+                <li class="list-group-item" v-for="(orderItem,i) in order.orderItems">
+                    <div class="row">
+                        <div class="media col-lg-9 d-flex align-items-center">
+                            <img v-bind:src="orderItem.productPic" class="mr-3" v-bind:alt="orderItem.productName" width="64" height="64">
+                            <div class="media-body">
+                                <h5 class="mt-0">{{orderItem.productName}}</h5>
+                                <span class="badge badge-primary" style="margin-right: 8px;" v-for="(attr,i) in JSON.parse(orderItem.productAttr)">{{attr.value}}</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-1 d-flex align-items-center">
+                            ￥{{orderItem.productPrice}}
+                        </div>
+                        <div class="col-lg-1 d-flex align-items-center">
+                            *{{orderItem.productQuantity}}
+                        </div>
+                        <div class="col-lg-1 d-flex align-items-center">
+                            ￥{{orderItem.productPrice*orderItem.productQuantity}}
+                        </div>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-lg-6 d-flex align-items-center">
+                            总计：<span>￥{{order.orderTotal}}</span>
+                        </div>
+<!--                        订单状态：0->待付款；1->待发货；2->已发货；3->已完成；4->已关闭；5->无效订单-->
+                        <div class="col-lg-6 d-flex align-items-center justify-content-end">
+                            <button type="button" class="btn btn-primary" v-if="order.status==0">待付款</button>
+                            <button type="button" class="btn btn-link" disabled v-if="order.status==1">待发货</button>
+                            <button type="button" class="btn btn-link" disabled v-if="order.status==2">已发货</button>
+                            <button type="button" class="btn btn-link" disabled v-if="order.status==3">已完成</button>
+<!--                            <button type="button" class="btn btn-link">删除订单</button>-->
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+            <ul class="list-group mb-3" v-for="(order,i) in orders" v-if="order.status==0">
+                <li class="list-group-item">
+                    <div class="row d-none d-lg-flex">
+                        <div class="media col-lg-9 d-flex align-items-center">
+                            商品
+                        </div>
+                        <div class="col-lg-1 d-flex align-items-center">
+                            单价
+                        </div>
+                        <div class="col-lg-1 d-flex align-items-center">
+                            数量
+                        </div>
+                        <div class="col-lg-1 d-flex align-items-center">
+                            小计
+                        </div>
+                    </div>
+                </li>
+                <li class="list-group-item" v-for="(orderItem,i) in order.orderItems">
+                    <div class="row">
+                        <div class="media col-lg-9 d-flex align-items-center">
+                            <img v-bind:src="orderItem.productPic" class="mr-3" v-bind:alt="orderItem.productName" width="64" height="64">
+                            <div class="media-body">
+                                <h5 class="mt-0">{{orderItem.productName}}</h5>
+                                <span class="badge badge-primary" style="margin-right: 8px;" v-for="(attr,i) in JSON.parse(orderItem.productAttr)">{{attr.value}}</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-1 d-flex align-items-center">
+                            ￥{{orderItem.productPrice}}
+                        </div>
+                        <div class="col-lg-1 d-flex align-items-center">
+                            *{{orderItem.productQuantity}}
+                        </div>
+                        <div class="col-lg-1 d-flex align-items-center">
+                            ￥{{orderItem.productPrice*orderItem.productQuantity}}
+                        </div>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-lg-6 d-flex align-items-center">
+                            总计：<span>￥{{order.orderTotal}}</span>
+                        </div>
+                        <div class="col-lg-6 d-flex align-items-center justify-content-end">
+                            <button type="button" class="btn btn-primary" v-if="order.status==0">待付款</button>
+                            <button type="button" class="btn btn-link" disabled v-if="order.status==1">待发货</button>
+                            <button type="button" class="btn btn-link" disabled v-if="order.status==2">已发货</button>
+                            <button type="button" class="btn btn-link" disabled v-if="order.status==3">已完成</button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+            <ul class="list-group mb-3" v-for="(order,i) in orders" v-if="order.status==1">
+                <li class="list-group-item">
+                    <div class="row d-none d-lg-flex">
+                        <div class="media col-lg-9 d-flex align-items-center">
+                            商品
+                        </div>
+                        <div class="col-lg-1 d-flex align-items-center">
+                            单价
+                        </div>
+                        <div class="col-lg-1 d-flex align-items-center">
+                            数量
+                        </div>
+                        <div class="col-lg-1 d-flex align-items-center">
+                            小计
+                        </div>
+                    </div>
+                </li>
+                <li class="list-group-item" v-for="(orderItem,i) in order.orderItems">
+                    <div class="row">
+                        <div class="media col-lg-9 d-flex align-items-center">
+                            <img v-bind:src="orderItem.productPic" class="mr-3" v-bind:alt="orderItem.productName" width="64" height="64">
+                            <div class="media-body">
+                                <h5 class="mt-0">{{orderItem.productName}}</h5>
+                                <span class="badge badge-primary" style="margin-right: 8px;" v-for="(attr,i) in JSON.parse(orderItem.productAttr)">{{attr.value}}</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-1 d-flex align-items-center">
+                            ￥{{orderItem.productPrice}}
+                        </div>
+                        <div class="col-lg-1 d-flex align-items-center">
+                            *{{orderItem.productQuantity}}
+                        </div>
+                        <div class="col-lg-1 d-flex align-items-center">
+                            ￥{{orderItem.productPrice*orderItem.productQuantity}}
+                        </div>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-lg-6 d-flex align-items-center">
+                            总计：<span>￥{{order.orderTotal}}</span>
+                        </div>
+                        <div class="col-lg-6 d-flex align-items-center justify-content-end">
+                            <button type="button" class="btn btn-primary" v-if="order.status==0">待付款</button>
+                            <button type="button" class="btn btn-link" disabled v-if="order.status==1">待发货</button>
+                            <button type="button" class="btn btn-link" disabled v-if="order.status==2">已发货</button>
+                            <button type="button" class="btn btn-link" disabled v-if="order.status==3">已完成</button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="tab-pane fade" id="pills-c" role="tabpanel" aria-labelledby="pills-c-tab">
+            <ul class="list-group mb-3" v-for="(order,i) in orders" v-if="order.status==2">
+                <li class="list-group-item">
+                    <div class="row d-none d-lg-flex">
+                        <div class="media col-lg-9 d-flex align-items-center">
+                            商品
+                        </div>
+                        <div class="col-lg-1 d-flex align-items-center">
+                            单价
+                        </div>
+                        <div class="col-lg-1 d-flex align-items-center">
+                            数量
+                        </div>
+                        <div class="col-lg-1 d-flex align-items-center">
+                            小计
+                        </div>
+                    </div>
+                </li>
+                <li class="list-group-item" v-for="(orderItem,i) in order.orderItems">
+                    <div class="row">
+                        <div class="media col-lg-9 d-flex align-items-center">
+                            <img v-bind:src="orderItem.productPic" class="mr-3" v-bind:alt="orderItem.productName" width="64" height="64">
+                            <div class="media-body">
+                                <h5 class="mt-0">{{orderItem.productName}}</h5>
+                                <span class="badge badge-primary" style="margin-right: 8px;" v-for="(attr,i) in JSON.parse(orderItem.productAttr)">{{attr.value}}</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-1 d-flex align-items-center">
+                            ￥{{orderItem.productPrice}}
+                        </div>
+                        <div class="col-lg-1 d-flex align-items-center">
+                            *{{orderItem.productQuantity}}
+                        </div>
+                        <div class="col-lg-1 d-flex align-items-center">
+                            ￥{{orderItem.productPrice*orderItem.productQuantity}}
+                        </div>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-lg-6 d-flex align-items-center">
+                            总计：<span>￥{{order.orderTotal}}</span>
+                        </div>
+                        <div class="col-lg-6 d-flex align-items-center justify-content-end">
+                            <button type="button" class="btn btn-primary" v-if="order.status==0">待付款</button>
+                            <button type="button" class="btn btn-link" disabled v-if="order.status==1">待发货</button>
+                            <button type="button" class="btn btn-link" disabled v-if="order.status==2">已发货</button>
+                            <button type="button" class="btn btn-link" disabled v-if="order.status==3">已完成</button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</main>
+<footer id="h-btmFooter" class="text-muted">
+    <div class="container">
+        <p class="float-right">
+            <a href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">回到顶部</font></font></a>
+        </p>
+        <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">氢商城</font></font></p>
+        <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">&copy;2020</font></font></p>
+    </div>
+</footer>
+
+
+<script type="text/javascript" src="../asset/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="../asset/jquery.serializejson.min.js"></script>
+<script type="text/javascript" src="../asset/popper.min.js"></script>
+<script type="text/javascript" src="../asset/bootstrap/4.4/bootstrap.min.js"></script>
+<script type="text/javascript" src="../asset/vue.js"></script>
+<script type="text/javascript" src="../asset/axios.min.js"></script>
+<script type="text/javascript" src="../js/c-util.js"></script>
+<script type="text/javascript" src="../js/c-api.js"></script>
+<script type="text/javascript" src="../js/c-top-nav-controller.js"></script>
+<script type="text/javascript" src="../js/v-order-controller.js"></script>
+</body>
+</html>

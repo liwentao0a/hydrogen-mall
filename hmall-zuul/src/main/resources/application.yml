@@ -1,0 +1,58 @@
+server:
+  port: 9021
+debug: false
+
+spring:
+#  profiles: dev
+  application:
+    name: hmall-zuul
+  redis:
+    password: root
+    port: 6379
+    jedis:
+      pool:
+        max-idle: 500
+        min-idle: 0
+        max-active: 2000
+        max-wait: 3000ms
+    host: 118.178.194.239
+
+eureka:
+  instance:
+    hostname: ${spring.application.name}
+    instance-id: ${spring.application.name}:${server.port}
+    prefer-ip-address: true
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://root:root@localhost:9001/eureka/
+
+zuul:
+  host:
+    connect-timeout-millis: 15000 #HTTP连接超时要比Hystrix的大
+    socket-timeout-millis: 60000   #socket超时
+  sensitive-headers: #敏感的header内容阻止转发到下游，默认情况下，header中的Cookie、Set-Cookie、Authorization将不被传递到下游服务器中
+    - Set-Cookie
+    - Authorization
+  ignored-services: #根据serviceId进行屏蔽
+  routes:
+    hmall-page:
+      path: /page/**
+  ratelimit:
+    key-prefix: hmall:ratelimit #按粒度拆分的临时变量key前缀
+    enabled: true
+    repository: REDIS #key存储类型
+    behind-proxy: true
+    add-response-headers: true
+    default-policy-list: #默认设置
+      - limit: 1000 #每次刷新的令牌数
+        quota: 10000 #每次刷新的所有请求时间总和,单位：秒
+        refresh-interval: 60 #请求令牌刷新时间,默认单位：秒
+        type: #可指定限流粒度，user-用户粒度，origin-客户端地址粒度，url-url粒度
+          - url
+
+ribbon:
+  ReadTimeout: 10000
+  ConnectTimeout: 10000
+

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>商品详情-氢商城</title>
+    <link rel="stylesheet" type="text/css" href="asset/bootstrap/4.4/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/c-common.css">
+    <link rel="stylesheet" type="text/css" href="css/c-top-nav.css">
+    <link rel="stylesheet" type="text/css" href="css/c-btm-footer.css">
+    <link rel="stylesheet" type="text/css" href="css/v-product.css">
+</head>
+<body>
+<!--顶部导航栏-->
+<nav id="h-topNav" class="mb-4">
+    <div class="navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand" href="#">氢商城</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">首页 <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="catalog.html">分类</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="USER/order.html">订单</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="USER/cart.html">购物车</a>
+                </li>
+                <li class="nav-item" v-show="user==null">
+                    <a class="nav-link" href="login.html">登录</a>
+                </li>
+                <li class="nav-item dropdown" v-show="user!=null">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarUser" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{user!=null?user.username:''}}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarUser">
+                        <a class="dropdown-item" href="USER/account.html">个人信息</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" v-on:click="logout" href="javascript:;">注销登录</a>
+                    </div>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0" id="searchForm" v-on:submit="searchFormSubmit">
+                <input class="form-control mr-sm-2" type="search" placeholder="关键字" aria-label="Search">
+                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">搜索</button>
+            </form>
+        </div>
+    </div>
+</nav>
+<main class="container mb-4" id="productInfoBox">
+    <div class="row">
+        <div class="col-lg-6 mb-3 mb-lg-0">
+            <div class="card" style="width: 100%;">
+                <img v-bind:src="currentSKU.defaultImg"
+                     class="card-img-top" v-bind:alt="currentSKU.name">
+                <div class="card-body" style="padding-left: 15%;padding-right: 15%">
+                    <div>
+                        <img v-for="(skuImage,i) in currentSKU.skuImages" v-bind:src="skuImage.imgUrl"
+                             v-bind:alt="skuImage.imgName" v-on:click="thumbnailClick(skuImage.imgUrl)" width="64" height="64" draggable="false">
+<!--                        <img src="https://img13.360buyimg.com/img/s200x200_jfs/t1/84662/1/15282/86773/5dcb6c64E4690c01b/375589cfc441e66c.jpg!cc_100x100.webp"-->
+<!--                             alt="..." width="64" height="64" draggable="false">-->
+                    </div>
+
+                    <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" style="background-image: url('asset/feather/arrow-left.svg');" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" style="background-image: url('asset/feather/arrow-right.svg');" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div id="productParamBox" class="col-lg-6 mb-3 mb-lg-0">
+            <h1 class="mb-3">{{currentSKU.name}}</h1>
+            <p>{{currentSKU.description}}</p>
+            <p>价格：￥{{currentSKU.price}}</p>
+            <p>
+<!--                库存：{{skuIdToSkuStockMap.get(currentSKU.id)}}-->
+                <span class="badge badge-success" v-if="skuIdToSkuStockMap.get(currentSKU.id)>0">有货</span>
+                <span class="badge badge-secondary" v-if="skuIdToSkuStockMap.get(currentSKU.id)<=0">无货</span>
+            </p>
+<!--            <p>重量：1kg</p>-->
+            <div class="mb-3 pt-2 pb-2" id="saleAttrBoxs">
+                <div class="row saleAttrBox" v-for="(productSaleAttr,i) in productSaleAttrs">
+                    <div class="d-flex align-items-center justify-content-center">{{productSaleAttr.saleAttrName}}</div>
+                    <div v-for="(saleAttrValue,index) in productSaleAttr.saleAttrValues">
+                        <input type="radio" v-model="productSaleAttrValueRadioValues[i]" v-bind:vModelIndex="i" v-bind:name="'saleAttr-'+productSaleAttr.productSaleAttrId"
+                               class="saleAttrValueRadio" v-bind:value="saleAttrValue.saleAttrValueId" v-on:change="saleAttrValueRadioChange">
+                        <a href="javascript:;" class="saleAttrValue" v-on:click="saleAttrValueClick">{{saleAttrValue.saleAttrValueName}}</a>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3 d-flex align-items-center">
+                <input type="number" min="1" max="200" value="1" v-model="quantity" v-on:change="quantityInputChange" class="form-control d-inline-block mr-1" style="width: 106px;">
+                <button type="button" class="btn btn-primary" v-on:click="addToCartBtnClick">加入购物车</button>
+            </div>
+        </div>
+    </div>
+</main>
+<footer id="h-btmFooter" class="text-muted">
+    <div class="container">
+        <p class="float-right">
+            <a href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">回到顶部</font></font></a>
+        </p>
+        <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">氢商城</font></font></p>
+        <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">&copy;2020</font></font></p>
+    </div>
+</footer>
+
+
+
+
+<script type="text/javascript" src="asset/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="asset/jquery.serializejson.min.js"></script>
+<script type="text/javascript" src="asset/popper.min.js"></script>
+<script type="text/javascript" src="asset/bootstrap/4.4/bootstrap.min.js"></script>
+<script type="text/javascript" src="asset/vue.js"></script>
+<script type="text/javascript" src="asset/axios.min.js"></script>
+<script type="text/javascript" src="js/c-util.js"></script>
+<script type="text/javascript" src="js/c-api.js"></script>
+<script type="text/javascript" src="js/c-top-nav-controller.js"></script>
+<script type="text/javascript" src="js/v-product.js"></script>
+<script type="text/javascript" src="js/v-product-controller.js"></script>
+</body>
+</html>

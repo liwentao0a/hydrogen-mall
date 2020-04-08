@@ -1,0 +1,26 @@
+---
+spring:
+  application:
+    name: hmall-config
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/liwentao0a/hydrogen-mall-config.git
+#          username:
+#          password:
+server:
+  port: 9011
+debug: false
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${server.port}
+    prefer-ip-address: true
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://root:root@localhost:9001/eureka/
+logging:
+  level:
+    root: info
