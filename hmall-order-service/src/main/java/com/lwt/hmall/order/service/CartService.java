@@ -8,7 +8,7 @@ import com.lwt.hmall.api.constant.CodeEnum;
 import com.lwt.hmall.common.client.SkuClient;
 import com.lwt.hmall.order.constant.CacheName;
 import com.lwt.hmall.order.mapper.OmsCartItemMapper;
-import com.lwt.hmall.service.config.redis.cache.CacheFuzzyRemove;
+import com.lwt.hmall.redis.cache.autoconfigure.CacheFuzzyRemove;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;

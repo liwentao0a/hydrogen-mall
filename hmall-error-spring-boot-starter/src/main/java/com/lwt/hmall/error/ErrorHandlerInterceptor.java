@@ -1,7 +1,8 @@
-package com.lwt.hmall.common.config.error;
+package com.lwt.hmall.error;
 
 import com.alibaba.fastjson.JSON;
 import com.lwt.hmall.api.util.IsUtils;
+import com.lwt.hmall.error.properties.ErrorProperties;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;

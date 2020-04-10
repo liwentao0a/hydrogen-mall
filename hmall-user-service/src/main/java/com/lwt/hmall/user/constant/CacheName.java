@@ -1,6 +1,6 @@
 package com.lwt.hmall.user.constant;
 
-import com.lwt.hmall.service.config.redis.cache.CacheConfig;
+import com.lwt.hmall.redis.cache.autoconfigure.RedisCacheAutoConfiguration;
 
 /**
  * @Author lwt
@@ -9,5 +9,5 @@ import com.lwt.hmall.service.config.redis.cache.CacheConfig;
  */
 public class CacheName {
 
-    public static final String CACHE_NAME= CacheConfig.CACHE_NAME_PREFIX+":user";
+    public static final String CACHE_NAME= RedisCacheAutoConfiguration.CACHE_NAME_PREFIX+":user";
 }

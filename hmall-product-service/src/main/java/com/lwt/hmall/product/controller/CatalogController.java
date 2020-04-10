@@ -8,7 +8,6 @@ import com.lwt.hmall.api.util.ResultUtils;
 import com.lwt.hmall.product.service.CatalogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,7 +21,6 @@ import java.util.List;
  */
 @RestController
 @Validated
-@CrossOrigin
 public class CatalogController {
 
     @Autowired

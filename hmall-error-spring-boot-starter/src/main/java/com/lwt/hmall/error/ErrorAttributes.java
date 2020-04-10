@@ -1,4 +1,4 @@
-package com.lwt.hmall.common.config.error;
+package com.lwt.hmall.error;
 
 
 import com.lwt.hmall.api.bean.Result;
@@ -12,7 +12,7 @@ import java.util.Map;
  * @Date 2020/4/6 11:11
  * @Description
  */
-public class MyErrorAttributes extends DefaultErrorAttributes {
+public class ErrorAttributes extends DefaultErrorAttributes {
     @Override
     public Map<String, Object> getErrorAttributes(WebRequest webRequest, boolean includeStackTrace) {
         Map<String, Object> errorAttributes = super.getErrorAttributes(webRequest, includeStackTrace);

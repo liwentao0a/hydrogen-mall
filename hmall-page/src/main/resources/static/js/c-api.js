@@ -3,8 +3,8 @@ axios.defaults.withCredentials=true;
 
 var Api={
     host:{
-        // page:'http://localhost',
-        page:'http://localhost:63342/hydrogen-mall/hmall-page-web/static',
+        page:'http://localhost:9021/page',
+        // page:'http://localhost:63342/hydrogen-mall/hmall-page-web/static',
         // user:'http://localhost:8001',
         user:'http://localhost:9021/user',
         // passport:'http://localhost:8011',

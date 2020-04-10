@@ -1,4 +1,4 @@
-package com.lwt.hmall.common.config.error;
+package com.lwt.hmall.error.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

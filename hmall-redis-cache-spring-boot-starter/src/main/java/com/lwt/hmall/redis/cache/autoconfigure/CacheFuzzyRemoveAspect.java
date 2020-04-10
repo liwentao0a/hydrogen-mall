@@ -1,4 +1,4 @@
-package com.lwt.hmall.service.config.redis.cache;
+package com.lwt.hmall.redis.cache.autoconfigure;
 
 import com.lwt.hmall.redis.util.RedisUtils;
 import org.aspectj.lang.JoinPoint;

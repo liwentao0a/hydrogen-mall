@@ -2,8 +2,8 @@ package com.lwt.hmall.ware.service;
 
 import com.lwt.hmall.api.bean.OmsOrderItem;
 import com.lwt.hmall.api.bean.WmsWareSku;
+import com.lwt.hmall.redis.cache.autoconfigure.CacheFuzzyRemove;
 import com.lwt.hmall.redis.util.RedisLock;
-import com.lwt.hmall.service.config.redis.cache.CacheFuzzyRemove;
 import com.lwt.hmall.ware.constant.CacheName;
 import com.lwt.hmall.ware.mapper.WmsWareInfoMapper;
 import com.lwt.hmall.ware.mapper.WmsWareSkuMapper;

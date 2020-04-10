@@ -1,4 +1,4 @@
-package com.lwt.hmall.service.config.redis.cache;
+package com.lwt.hmall.redis.cache.autoconfigure;
 
 import org.springframework.cache.interceptor.KeyGenerator;
 

@@ -29,6 +29,7 @@ public class CatalogController {
      */
     @RequestMapping(value = "/listCatalogs",method = RequestMethod.GET)
     public Result<List<PmsBaseCatalog1>> listCatalogs(){
-        return catalogClient.listCatalogs();
+        Result<List<PmsBaseCatalog1>> listResult = catalogClient.listCatalogs();
+        return listResult;
     }
 }

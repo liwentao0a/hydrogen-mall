@@ -1,4 +1,4 @@
-package com.lwt.hmall.service.config.redis.cache;
+package com.lwt.hmall.redis.cache.autoconfigure;
 
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.codec.digest.DigestUtils;

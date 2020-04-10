@@ -47,7 +47,7 @@ zuul:
     add-response-headers: true
     default-policy-list: #默认设置
       - limit: 1000 #每次刷新的令牌数
-        quota: 10000 #每次刷新的所有请求时间总和,单位：秒
+        quota: 100000 #每次刷新的所有请求时间总和,单位：秒
         refresh-interval: 60 #请求令牌刷新时间,默认单位：秒
         type: #可指定限流粒度，user-用户粒度，origin-客户端地址粒度，url-url粒度
           - url
