@@ -4,7 +4,7 @@ import com.lwt.hmall.api.bean.UmsUser;
 import com.lwt.hmall.api.bean.UmsUserReceiveAddress;
 import com.lwt.hmall.api.constant.RoleEnum;
 import com.lwt.hmall.api.constant.UserStatusEnum;
-import com.lwt.hmall.redis.cache.autoconfigure.CacheFuzzyRemove;
+import com.lwt.hmall.redis.cache.CacheFuzzyRemove;
 import com.lwt.hmall.user.constant.CacheName;
 import com.lwt.hmall.user.mapper.UmsUserMapper;
 import com.lwt.hmall.user.mapper.UmsUserReceiveAddressMapper;
@@ -130,8 +130,8 @@ public class UserService {
      * @return
      */
     @CacheFuzzyRemove(cacheName = CacheName.CACHE_NAME,value = {
-            "#targetName+'get*'",
-            "#targetName+'list*'"
+            "#targetName+':get*'",
+            "#targetName+':list*'"
     })
     @Transactional
     public boolean saveUserReceiveAddress(UmsUserReceiveAddress umsUserReceiveAddress){

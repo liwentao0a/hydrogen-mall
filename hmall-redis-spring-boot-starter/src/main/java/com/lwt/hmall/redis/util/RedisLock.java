@@ -19,8 +19,8 @@ import java.util.concurrent.locks.Lock;
 public class RedisLock implements Lock {
 
     private RedisTemplate redisTemplate;
-    private String prefix="hmall:lock::";
-    private String key=prefix+RedisLock.class.getName();
+    private String prefix="hmall:lock";
+    private String name=RedisLock.class.getName();
     private String lockToken;
     private RedisScript<Boolean> redisScript;
 
@@ -30,6 +30,7 @@ public class RedisLock implements Lock {
     }
 
     public void init(){
+        //初始化lua脚本
         redisScript = new RedisScript<Boolean>() {
             private String luaScript = "if redis.call('get',KEYS[1])==ARGV[1] then return redis.call('del',KEYS[1]) else return 0 end";
 
@@ -48,6 +49,10 @@ public class RedisLock implements Lock {
                 return luaScript;
             }
         };
+    }
+
+    private String getKey(){
+        return (prefix==null?"":prefix+":")+name;
     }
 
     @Override
@@ -148,7 +153,7 @@ public class RedisLock implements Lock {
     @Override
     public void unlock() {
         ArrayList<String> keys = new ArrayList<>();
-        keys.add(key);
+        keys.add(getKey());
         redisTemplate.execute(redisScript, keys, lockToken);
     }
 
@@ -231,23 +236,31 @@ public class RedisLock implements Lock {
      */
     private boolean tryLock(long l,TimeUnit timeUnit,String lockToken){
         this.lockToken=lockToken;
-        return l==-1?redisTemplate.opsForValue().setIfAbsent(key, lockToken):redisTemplate.opsForValue().setIfAbsent(key, lockToken, l, timeUnit);
+        return l==-1?redisTemplate.opsForValue().setIfAbsent(getKey(), lockToken):redisTemplate.opsForValue().setIfAbsent(getKey(), lockToken, l, timeUnit);
     }
 
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    public RedisTemplate<String, String> getRedisTemplate() {
+    public RedisTemplate getRedisTemplate() {
         return redisTemplate;
     }
 
-    public void setRedisTemplate(RedisTemplate<String, String> redisTemplate) {
+    public void setRedisTemplate(RedisTemplate redisTemplate) {
         this.redisTemplate = redisTemplate;
+    }
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getLockToken() {

@@ -1,7 +1,8 @@
-package com.lwt.hmall.redis.cache.autoconfigure;
+package com.lwt.hmall.redis.cache;
 
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.cache.interceptor.KeyGenerator;
 
 import java.lang.reflect.Method;
 
@@ -10,7 +11,7 @@ import java.lang.reflect.Method;
  * @Date 2020/3/22 12:57
  * @Description
  */
-public class CMPKeyGenerator implements StringKeyGenerator {
+public class CMPKeyGenerator implements KeyGenerator {
 
     private static String keySplitChar = ":";
 
@@ -18,11 +19,6 @@ public class CMPKeyGenerator implements StringKeyGenerator {
     public Object generate(Object target, Method method, Object... params) {
         String className = target.getClass().getName();
         String methodName = method.getName();
-        return generate(className, methodName, params);
-    }
-
-    @Override
-    public Object generate(String className, String methodName, Object... params){
         StringBuffer key = new StringBuffer();
         key.append(className)
                 .append(keySplitChar)
@@ -35,4 +31,5 @@ public class CMPKeyGenerator implements StringKeyGenerator {
         System.out.println(key.toString());
         return key.toString();
     }
+
 }

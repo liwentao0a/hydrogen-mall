@@ -2,7 +2,7 @@ package com.lwt.hmall.ware.service;
 
 import com.lwt.hmall.api.bean.OmsOrderItem;
 import com.lwt.hmall.api.bean.WmsWareSku;
-import com.lwt.hmall.redis.cache.autoconfigure.CacheFuzzyRemove;
+import com.lwt.hmall.redis.cache.CacheFuzzyRemove;
 import com.lwt.hmall.redis.util.RedisLock;
 import com.lwt.hmall.ware.constant.CacheName;
 import com.lwt.hmall.ware.mapper.WmsWareInfoMapper;
@@ -59,8 +59,8 @@ public class WareService {
      * @return
      */
     @CacheFuzzyRemove(cacheName = CacheName.CACHE_NAME,value = {
-            "#targetName+'get*'",
-            "#targetName+'list*'"
+            "#targetName+':get*'",
+            "#targetName+':list*'"
     })
     @Transactional
     public boolean lockWareSkuByOrderItems(List<OmsOrderItem> omsOrderItems){
@@ -108,8 +108,8 @@ public class WareService {
      * @return
      */
     @CacheFuzzyRemove(cacheName = CacheName.CACHE_NAME,value = {
-            "#targetName+'get*'",
-            "#targetName+'list*'"
+            "#targetName+':get*'",
+            "#targetName+':list*'"
     })
     @Transactional
     public boolean unlockWareSkuByOrderItems(List<OmsOrderItem> omsOrderItems){

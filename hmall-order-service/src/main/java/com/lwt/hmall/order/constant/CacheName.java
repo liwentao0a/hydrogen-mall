@@ -1,6 +1,6 @@
 package com.lwt.hmall.order.constant;
 
-import com.lwt.hmall.redis.cache.autoconfigure.RedisCacheAutoConfiguration;
+import com.lwt.hmall.redis.constant.RedisConstants;
 
 /**
  * @Author lwt
@@ -9,5 +9,5 @@ import com.lwt.hmall.redis.cache.autoconfigure.RedisCacheAutoConfiguration;
  */
 public class CacheName {
 
-    public static final String CACHE_NAME= RedisCacheAutoConfiguration.CACHE_NAME_PREFIX+":order";
+    public static final String CACHE_NAME= RedisConstants.PREFIX_CACHE +":order";
 }

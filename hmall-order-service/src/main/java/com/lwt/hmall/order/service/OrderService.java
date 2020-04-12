@@ -8,9 +8,8 @@ import com.lwt.hmall.common.client.WareClient;
 import com.lwt.hmall.order.constant.CacheName;
 import com.lwt.hmall.order.mapper.OmsOrderItemMapper;
 import com.lwt.hmall.order.mapper.OmsOrderMapper;
-import com.lwt.hmall.redis.cache.autoconfigure.CacheFuzzyRemove;
-import com.lwt.hmall.redis.util.RedisEnum;
-import com.lwt.hmall.redis.util.RedisUtils;
+import com.lwt.hmall.redis.cache.CacheFuzzyRemove;
+import com.lwt.hmall.redis.constant.RedisConstants;
 import com.lwt.hmall.service.config.RabbitConfig;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -67,7 +66,9 @@ public class OrderService {
      */
     public String createOrderSn() {
         String orderToken = UUID.randomUUID().toString() + "-" + System.currentTimeMillis();
-        String key = RedisUtils.keyBuilder(RedisEnum.HMALL_ORDERSERVICE_CREATEORDERTOKEN, orderToken);
+        String key= RedisConstants.PREFIX_TEMP+":"+this.getClass().getName()+
+                ":orderSn"+
+                ":"+orderToken;
         stringRedisTemplate.opsForValue().set(key, orderToken, 1, TimeUnit.HOURS);
         return orderToken;
     }
@@ -79,7 +80,9 @@ public class OrderService {
      * @return
      */
     public boolean checkOrderSn(String orderToken) {
-        String key = RedisUtils.keyBuilder(RedisEnum.HMALL_ORDERSERVICE_CREATEORDERTOKEN, orderToken);
+        String key= RedisConstants.PREFIX_TEMP+":"+this.getClass().getName()+
+                ":orderSn"+
+                ":"+orderToken;
         boolean delete = stringRedisTemplate.delete(key);
         return delete;
     }
@@ -92,8 +95,8 @@ public class OrderService {
      * @return
      */
     @CacheFuzzyRemove(cacheName = CacheName.CACHE_NAME,value = {
-            "#targetName+'get*'",
-            "#targetName+'list*'"
+            "#targetName+':get*'",
+            "#targetName+':list*'"
     })
     @Transactional
     public boolean saveOrder(String orderSn, List<Long> cartItemIds, long userId, long receiverId) {

@@ -8,7 +8,7 @@ import com.lwt.hmall.api.constant.CodeEnum;
 import com.lwt.hmall.common.client.SkuClient;
 import com.lwt.hmall.order.constant.CacheName;
 import com.lwt.hmall.order.mapper.OmsCartItemMapper;
-import com.lwt.hmall.redis.cache.autoconfigure.CacheFuzzyRemove;
+import com.lwt.hmall.redis.cache.CacheFuzzyRemove;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
@@ -43,8 +43,8 @@ public class CartService {
      * @return
      */
     @CacheFuzzyRemove(cacheName = CacheName.CACHE_NAME,value = {
-            "#targetName+'get*'",
-            "#targetName+'list*'"
+            "#targetName+':get*'",
+            "#targetName+':list*'"
     })
     public boolean saveCartItem(long skuId,long quantity,long userId,String userNickname){
         //判断购物车里是否已有商品
@@ -115,8 +115,8 @@ public class CartService {
      * @return
      */
     @CacheFuzzyRemove(cacheName = CacheName.CACHE_NAME,value = {
-            "#targetName+'get*'",
-            "#targetName+'list*'"
+            "#targetName+':get*'",
+            "#targetName+':list*'"
     })
     public boolean removeCartItemByCartItemIdAndUserId(long cartItemId,long userId){
         OmsCartItem omsCartItemParam = new OmsCartItem();
@@ -160,8 +160,8 @@ public class CartService {
      * @return
      */
     @CacheFuzzyRemove(cacheName = CacheName.CACHE_NAME,value = {
-            "#targetName+'get*'",
-            "#targetName+'list*'"
+            "#targetName+':get*'",
+            "#targetName+':list*'"
     })
     public boolean removeCartItemByUserIdAndInCartItemIds(List<Long> cartItemIds,long userId){
         Example example = new Example(OmsCartItem.class);

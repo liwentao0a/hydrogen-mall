@@ -36,7 +36,7 @@ public class LoginAuthFilter extends ZuulFilter {
 
     private RestTemplate restTemplate=new RestTemplate();
 
-    private String verifyUrl="http://localhost:8011/verifyToken";
+    private String verifyUrl="http://localhost:8000/verifyToken";
 
     @Override
     public String filterType() {

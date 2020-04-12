@@ -3,18 +3,18 @@ axios.defaults.withCredentials=true;
 
 var Api={
     host:{
-        page:'http://localhost:9021/page',
+        page:'http://localhost:9000/page',
         // page:'http://localhost:63342/hydrogen-mall/hmall-page-web/static',
         // user:'http://localhost:8001',
-        user:'http://localhost:9021/user',
+        user:'http://localhost:9000/user',
         // passport:'http://localhost:8011',
-        passport:'http://localhost:9021/passport',
+        passport:'http://localhost:9000/passport',
         // product:'http://localhost:8021',
-        product:'http://localhost:9021/product',
+        product:'http://localhost:9000/product',
         // ware:'http://localhost:8031',
-        ware:'http://localhost:9021/ware',
+        ware:'http://localhost:9000/ware',
         // order:'http://localhost:8041',
-        order:'http://localhost:9021/order',
+        order:'http://localhost:9000/order',
     },
     code:{
         SUCCESS:1,

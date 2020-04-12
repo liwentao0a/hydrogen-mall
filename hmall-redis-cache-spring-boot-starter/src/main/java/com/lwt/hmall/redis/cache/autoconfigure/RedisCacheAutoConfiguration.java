@@ -1,5 +1,7 @@
 package com.lwt.hmall.redis.cache.autoconfigure;
 
+import com.lwt.hmall.redis.cache.CMPKeyGenerator;
+import com.lwt.hmall.redis.cache.CacheFuzzyRemoveAspect;
 import com.lwt.hmall.redis.cache.properties.RedisCacheProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -32,8 +34,6 @@ import java.time.Duration;
 @EnableAspectJAutoProxy
 public class RedisCacheAutoConfiguration extends CachingConfigurerSupport {
 
-    public static final String CACHE_NAME_PREFIX="hmall:cache";
-
     @Bean
     public CacheManager cacheManager(RedisTemplate redisTemplate) {
         RedisCacheWriter redisCacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(redisTemplate.getConnectionFactory());
@@ -46,6 +46,11 @@ public class RedisCacheAutoConfiguration extends CachingConfigurerSupport {
     @Override
     public KeyGenerator keyGenerator() {
         return new CMPKeyGenerator();
+    }
+
+    @Bean
+    public CacheFuzzyRemoveAspect cacheFuzzyRemoveAspect(){
+        return new CacheFuzzyRemoveAspect();
     }
 
 }
