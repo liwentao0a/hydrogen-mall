@@ -5,17 +5,20 @@ import com.lwt.hmall.api.bean.UmsUserReceiveAddress;
 import com.lwt.hmall.api.constant.RoleEnum;
 import com.lwt.hmall.api.constant.UserStatusEnum;
 import com.lwt.hmall.redis.cache.CacheFuzzyRemove;
+import com.lwt.hmall.redis.constant.RedisConstants;
 import com.lwt.hmall.user.constant.CacheName;
 import com.lwt.hmall.user.mapper.UmsUserMapper;
 import com.lwt.hmall.user.mapper.UmsUserReceiveAddressMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Author lwt
@@ -25,6 +28,9 @@ import java.util.List;
 @Service
 @CacheConfig(cacheNames = CacheName.CACHE_NAME)
 public class UserService {
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     @Autowired
     private UmsUserMapper umsUserMapper;
@@ -160,6 +166,59 @@ public class UserService {
         umsUserReceiveAddressParam.setId(receiveAddressId);
         umsUserReceiveAddressParam.setUserId(userId);
         return umsUserReceiveAddressMapper.delete(umsUserReceiveAddressParam)>0;
+    }
+
+    /**
+     * 设置用户令牌
+     * @param userId
+     * @param token
+     * @return
+     */
+    public boolean setToken(long userId,String token,long l,String timeUnit){
+        try {
+            String key = getTokenKey(userId,token);
+            TimeUnit tu = TimeUnit.valueOf(timeUnit);
+            stringRedisTemplate.opsForValue().set(key,token,l, tu);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
+
+    private String getTokenKey(long userId,String token) {
+        return RedisConstants.PREFIX_TEMP+":userToken:"+userId+":"+token;
+    }
+
+    /**
+     * 检查用户令牌
+     * @param userId
+     * @param token
+     * @return
+     */
+    public boolean checkToken(long userId,String token){
+        try {
+            String key = getTokenKey(userId,token);
+            String userToken = stringRedisTemplate.opsForValue().get(key);
+            return token.equals(userToken);
+        }catch (Exception e){
+            return false;
+        }
+    }
+
+    /**
+     * 删除用户令牌
+     * @param userId
+     * @param token
+     * @return
+     */
+    public boolean removeToken(long userId,String token){
+        try {
+            String key = getTokenKey(userId,token);
+            Boolean delete = stringRedisTemplate.delete(key);
+            return true;
+        }catch (Exception e) {
+            return false;
+        }
     }
 
 }

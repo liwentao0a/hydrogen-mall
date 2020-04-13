@@ -40,9 +40,19 @@ var hTopNav= new Vue({
         },
         logout:function () {
             var $this=this;
-            $util.removeCookie('user-token');
-            $this.user=null;
-            window.location.href=window.location.href;
+            let userToken = $util.getCookie('user-token');
+            $api.logout(userToken).then(function (value) {
+                let data = value.data;
+                if (data.code==Api.code.SUCCESS){
+                    $util.removeCookie('user-token');
+                    $this.user=null;
+                    window.location.href=window.location.href;
+                } else {
+                    $util.toast('退出登录失败，请刷新页面重试');
+                }
+            }).catch(function (reason) {
+                $util.toast('退出登录失败，请刷新页面重试,异常'+reason);
+            });
         },
         searchFormSubmit:function (e) {
             e.preventDefault();

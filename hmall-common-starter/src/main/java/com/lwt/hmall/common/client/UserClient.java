@@ -79,4 +79,35 @@ public interface UserClient {
     public Result removeUserReceiveAddressByIdAndUserId(@RequestParam("receiveAddressId") @NotNull Long receiveAddressId,
                                                          @RequestParam("userId") @NotNull Long userId);
 
+    /**
+     * 设置用户令牌
+     * @param userId
+     * @param token
+     * @return
+     */
+    @RequestMapping(value = "/setToken",method = RequestMethod.POST)
+    public Result setToken(@RequestParam("userId") @NotNull Long userId,
+                           @RequestParam("token") @NotBlank String token,
+                           @RequestParam("l") @NotNull Long l,
+                           @RequestParam("timeUnit") @NotBlank String timeUnit);
+
+    /**
+     * 检查用户令牌
+     * @param userId
+     * @param token
+     * @return
+     */
+    @RequestMapping(value = "/checkToken",method = RequestMethod.GET)
+    public Result checkToken(@RequestParam("userId") @NotNull Long userId,
+                                     @RequestParam("token") @NotBlank String token);
+
+    /**
+     * 删除用户令牌
+     * @param userId
+     * @param token
+     * @return
+     */
+    @RequestMapping(value = "/removeToken",method = RequestMethod.DELETE)
+    public Result removeToken(@RequestParam("userId") @NotNull Long userId,
+                              @RequestParam("token") @NotBlank String token);
 }

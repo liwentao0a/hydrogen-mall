@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.lwt.hmall.api.bean.Result;
 import com.lwt.hmall.api.bean.UmsUser;
 import com.lwt.hmall.api.constant.CodeEnum;
+import com.lwt.hmall.api.constant.HeaderEnum;
 import com.lwt.hmall.api.constant.RoleEnum;
 import com.lwt.hmall.api.constant.UserStatusEnum;
 import com.lwt.hmall.api.util.JWTUtils;
@@ -23,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotBlank;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Author lwt
@@ -83,6 +85,12 @@ public class PassportController {
         if (body==null){
             return ResultUtils.result(CodeEnum.RETURN_FALSE);
         }
+        UmsUser user = JSON.parseObject( JSON.parse((String) body.get("user")).toString(), UmsUser.class);
+        //判断当前令牌是否存在
+        Result result = userClient.checkToken(user.getId(), token);
+        if (result.getCode()!=CodeEnum.SUCCESS.getCode()){
+            return ResultUtils.result(CodeEnum.RETURN_FALSE);
+        }
         return ResultUtils.success();
     }
 
@@ -121,7 +129,27 @@ public class PassportController {
         Map<String,Object> body=new HashMap<>();
         body.put("user", JSON.toJSONString(user));
         String token = JWTUtils.createToken(userTokenProperties.getKey(), ipAddress, body);
+
+        //设置用户令牌
+        Result result = userClient.setToken(data.getId(), token,7L, TimeUnit.DAYS.name());
+        if (result.getCode()!=CodeEnum.SUCCESS.getCode()){
+            return ResultUtils.fail();
+        }
+
         return ResultUtils.success(token);
+    }
+
+    /**
+     * 注销登录
+     * @param token
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/USER/logout",method = RequestMethod.GET)
+    public Result logout(String token,HttpServletRequest request){
+        UmsUser user = (UmsUser) ServletUtils.getHeader(request, HeaderEnum.USER);
+        Result result = userClient.removeToken(user.getId(), token);
+        return result;
     }
 
 }

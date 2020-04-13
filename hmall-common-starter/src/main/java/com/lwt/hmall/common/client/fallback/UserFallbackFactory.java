@@ -67,6 +67,21 @@ public class UserFallbackFactory implements FallbackFactory<UserClient> {
             public Result removeUserReceiveAddressByIdAndUserId(@NotNull Long receiveAddressId, @NotNull Long userId) {
                 return ResultUtils.result(CodeEnum.FAIL);
             }
+
+            @Override
+            public Result setToken(@NotNull Long userId, @NotBlank String token, @NotNull Long l, @NotBlank String timeUnit) {
+                return ResultUtils.result(CodeEnum.FAIL);
+            }
+
+            @Override
+            public Result checkToken(@NotNull Long userId, @NotBlank String token) {
+                return ResultUtils.result(CodeEnum.FAIL);
+            }
+
+            @Override
+            public Result removeToken(@NotNull Long userId, @NotBlank String token) {
+                return ResultUtils.result(CodeEnum.FAIL);
+            }
         };
     }
 }

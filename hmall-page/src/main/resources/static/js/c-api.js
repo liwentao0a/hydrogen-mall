@@ -94,6 +94,11 @@ var Api={
                 contentType: 'application/json;charset=UTF-8',
             });
         }
+        api.logout=function(token){
+            return axios.get(Api.host.passport+'/USER/logout?token='+token,{
+                contentType: 'application/json;charset=UTF-8',
+            });
+        }
 
 
 

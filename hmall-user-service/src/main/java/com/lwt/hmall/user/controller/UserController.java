@@ -150,6 +150,53 @@ public class UserController {
         return ResultUtils.result(CodeEnum.RETURN_FALSE);
     }
 
+    /**
+     * 设置用户令牌
+     * @param userId
+     * @param token
+     * @return
+     */
+    @RequestMapping(value = "/setToken",method = RequestMethod.POST)
+    public Result setToken(@RequestParam("userId") @NotNull Long userId,
+                           @RequestParam("token") @NotBlank String token,
+                           @RequestParam("l") @NotNull Long l,
+                           @RequestParam("timeUnit") @NotBlank String timeUnit){
+        if (userService.setToken(userId,token,l,timeUnit)){
+            return ResultUtils.success();
+        }
+        return ResultUtils.result(CodeEnum.RETURN_FALSE);
+    }
+
+    /**
+     * 检查用户令牌
+     * @param userId
+     * @param token
+     * @return
+     */
+    @RequestMapping(value = "/checkToken",method = RequestMethod.GET)
+    public Result checkToken(@RequestParam("userId") @NotNull Long userId,
+                                   @RequestParam("token") @NotBlank String token){
+        if (userService.checkToken(userId,token)){
+            return ResultUtils.success();
+        }
+        return ResultUtils.result(CodeEnum.RETURN_FALSE);
+    }
+
+    /**
+     * 删除用户令牌
+     * @param userId
+     * @param token
+     * @return
+     */
+    @RequestMapping(value = "/removeToken",method = RequestMethod.DELETE)
+    public Result removeToken(@RequestParam("userId") @NotNull Long userId,
+                              @RequestParam("token") @NotBlank String token){
+        if(userService.removeToken(userId,token)){
+            return ResultUtils.success();
+        }
+        return ResultUtils.result(CodeEnum.RETURN_FALSE);
+    }
+
     @RequestMapping("/test/{i}")
     public Object test(@PathVariable("i")Integer i){
         if (i<0){
