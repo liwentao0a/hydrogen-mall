@@ -2,9 +2,14 @@ var mainContainer=new Vue({
     el:'main.container',
     data:{
         // countdown:3
+        orderSn:''
     },
     mounted:function () {
         // this.startCountdown();
+        let orderSn = $util.getUrlParam("orderSn");
+        if (orderSn!=null){
+            this.orderSn=orderSn;
+        }
     },
     methods:{
         // startCountdown:function () {
@@ -21,6 +26,9 @@ var mainContainer=new Vue({
                 url=Api.host.page+url;
             }
             window.location.href=url;
+        },
+        goPay:function (orderSn) {
+            window.location.href=Api.host.page+"/USER/pay-method.html?orderSn="+orderSn;
         }
     }
 });

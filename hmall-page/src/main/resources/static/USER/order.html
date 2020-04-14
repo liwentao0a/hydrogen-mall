@@ -109,13 +109,25 @@
                     </div>
                 </li>
                 <li class="list-group-item">
+                    <div>
+                        {{order.receiverProvince}}
+                        {{order.receiverCity}}
+                        {{order.receiverRegion}}
+                        {{order.receiverDetailAddress}}
+                    </div>
+                    <div>
+                        {{order.receiverName}}
+                        {{order.receiverPhone}}
+                    </div>
+                </li>
+                <li class="list-group-item">
                     <div class="row">
                         <div class="col-lg-6 d-flex align-items-center">
                             总计：<span>￥{{order.orderTotal}}</span>
                         </div>
 <!--                        订单状态：0->待付款；1->待发货；2->已发货；3->已完成；4->已关闭；5->无效订单-->
                         <div class="col-lg-6 d-flex align-items-center justify-content-end">
-                            <button type="button" class="btn btn-primary" v-if="order.status==0">待付款</button>
+                            <button type="button" class="btn btn-primary" v-if="order.status==0" v-on:click="goPay(order.orderSn)">待付款</button>
                             <button type="button" class="btn btn-link" disabled v-if="order.status==1">待发货</button>
                             <button type="button" class="btn btn-link" disabled v-if="order.status==2">已发货</button>
                             <button type="button" class="btn btn-link" disabled v-if="order.status==3">已完成</button>
@@ -164,12 +176,24 @@
                     </div>
                 </li>
                 <li class="list-group-item">
+                    <div>
+                        {{order.receiverProvince}}
+                        {{order.receiverCity}}
+                        {{order.receiverRegion}}
+                        {{order.receiverDetailAddress}}
+                    </div>
+                    <div>
+                        {{order.receiverName}}
+                        {{order.receiverPhone}}
+                    </div>
+                </li>
+                <li class="list-group-item">
                     <div class="row">
                         <div class="col-lg-6 d-flex align-items-center">
                             总计：<span>￥{{order.orderTotal}}</span>
                         </div>
                         <div class="col-lg-6 d-flex align-items-center justify-content-end">
-                            <button type="button" class="btn btn-primary" v-if="order.status==0">待付款</button>
+                            <button type="button" class="btn btn-primary" v-if="order.status==0" v-on:click="goPay(order.orderSn)">待付款</button>
                             <button type="button" class="btn btn-link" disabled v-if="order.status==1">待发货</button>
                             <button type="button" class="btn btn-link" disabled v-if="order.status==2">已发货</button>
                             <button type="button" class="btn btn-link" disabled v-if="order.status==3">已完成</button>
@@ -217,12 +241,24 @@
                     </div>
                 </li>
                 <li class="list-group-item">
+                    <div>
+                        {{order.receiverProvince}}
+                        {{order.receiverCity}}
+                        {{order.receiverRegion}}
+                        {{order.receiverDetailAddress}}
+                    </div>
+                    <div>
+                        {{order.receiverName}}
+                        {{order.receiverPhone}}
+                    </div>
+                </li>
+                <li class="list-group-item">
                     <div class="row">
                         <div class="col-lg-6 d-flex align-items-center">
                             总计：<span>￥{{order.orderTotal}}</span>
                         </div>
                         <div class="col-lg-6 d-flex align-items-center justify-content-end">
-                            <button type="button" class="btn btn-primary" v-if="order.status==0">待付款</button>
+                            <button type="button" class="btn btn-primary" v-if="order.status==0" v-on:click="goPay(order.orderSn)">待付款</button>
                             <button type="button" class="btn btn-link" disabled v-if="order.status==1">待发货</button>
                             <button type="button" class="btn btn-link" disabled v-if="order.status==2">已发货</button>
                             <button type="button" class="btn btn-link" disabled v-if="order.status==3">已完成</button>
@@ -270,12 +306,24 @@
                     </div>
                 </li>
                 <li class="list-group-item">
+                    <div>
+                        {{order.receiverProvince}}
+                        {{order.receiverCity}}
+                        {{order.receiverRegion}}
+                        {{order.receiverDetailAddress}}
+                    </div>
+                    <div>
+                        {{order.receiverName}}
+                        {{order.receiverPhone}}
+                    </div>
+                </li>
+                <li class="list-group-item">
                     <div class="row">
                         <div class="col-lg-6 d-flex align-items-center">
                             总计：<span>￥{{order.orderTotal}}</span>
                         </div>
                         <div class="col-lg-6 d-flex align-items-center justify-content-end">
-                            <button type="button" class="btn btn-primary" v-if="order.status==0">待付款</button>
+                            <button type="button" class="btn btn-primary" v-if="order.status==0" v-on:click="goPay(order.orderSn)">待付款</button>
                             <button type="button" class="btn btn-link" disabled v-if="order.status==1">待发货</button>
                             <button type="button" class="btn btn-link" disabled v-if="order.status==2">已发货</button>
                             <button type="button" class="btn btn-link" disabled v-if="order.status==3">已完成</button>

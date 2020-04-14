@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>生成订单成功-氢商城</title>
+    <title>支付方式-氢商城</title>
     <link rel="stylesheet" type="text/css" href="../asset/bootstrap/4.4/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../css/c-common.css">
     <link rel="stylesheet" type="text/css" href="../css/c-top-nav.css">
@@ -54,41 +54,20 @@
         </div>
     </div>
 </nav>
-<main class="container mb-4">
-    <h1 class="text-center mb-4" style="font-weight: 300;color: #71b247;">
-        <img src="../image/check-green.svg" width="80" height="80" style="border: 5px solid #71b247;border-radius: 50%;">
-        生成订单成功！
-    </h1>
-<!--    <p class="text-center mb-3">{{countdown}}秒后前往订单页面</p>-->
-    <div class="row justify-content-center align-items-center">
-        <div>
-            <button type="button" class="btn btn-outline-secondary" v-on:click="redirectTo('/USER/order.html')">我的订单</button>
-            <button type="button" class="btn btn-primary" v-on:click="goPay(orderSn)">前往支付</button>
+<main class="container mb-4" id="payMethodBox">
+    <div class="pt-5 pb-5">
+        <div class="row">
+            <h1 class="col-lg-auto col-12 d-flex align-items-center justify-content-lg-start justify-content-center mb-lg-0 mb-3" style="color: #107FFC;">选择付款方式</h1>
+            <div class="d-flex align-items-center justify-content-center col-lg-auto">
+                <a href="javascript:;" v-on:click="orderPay(1)">
+                    <img src="../image/alipay.svg" width="100" height="100"/>
+                </a>
+                <a href="javascript:;" v-on:click="orderPay(2)">
+                    <img src="../image/social_wechat.svg" width="100" height="100"/>
+                </a>
+            </div>
         </div>
     </div>
-<!--    <div class="row">-->
-<!--        <div class="media col-lg-9 d-flex align-items-center">-->
-<!--            <img src="https://img10.360buyimg.com/mobilecms/s260x260_jfs/t3211/121/1112465269/106319/e55190f4/57c6ad29N14d8b5ca.jpg.webp" class="mr-3" alt="..." width="64" height="64">-->
-<!--            <div class="media-body">-->
-<!--                <h5 class="mt-0">Media heading</h5>-->
-<!--                Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras-->
-<!--                purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi-->
-<!--                vulputate fringilla. Donec lacinia congue felis in faucibus.-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="col-lg-1 d-flex align-items-center">-->
-<!--            <div class="d-lg-none">单价：</div>-->
-<!--            $1.00-->
-<!--        </div>-->
-<!--        <div class="col-lg-1 d-flex align-items-center">-->
-<!--            <div class="d-lg-none">数量：</div>-->
-<!--            *1-->
-<!--        </div>-->
-<!--        <div class="col-lg-1 d-flex align-items-center">-->
-<!--            <div class="d-lg-none">小计：</div>-->
-<!--            $1.00-->
-<!--        </div>-->
-<!--    </div>-->
 </main>
 <footer id="h-btmFooter" class="text-muted">
     <div class="container">
@@ -101,6 +80,8 @@
 </footer>
 
 
+
+
 <script type="text/javascript" src="../asset/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" src="../asset/jquery.serializejson.min.js"></script>
 <script type="text/javascript" src="../asset/popper.min.js"></script>
@@ -110,6 +91,6 @@
 <script type="text/javascript" src="../js/c-util.js"></script>
 <script type="text/javascript" src="../js/c-api.js"></script>
 <script type="text/javascript" src="../js/c-top-nav-controller.js"></script>
-<script type="text/javascript" src="../js/v-generate-order-success-controller.js"></script>
+<script type="text/javascript" src="../js/v-pay-method-controller.js"></script>
 </body>
 </html>

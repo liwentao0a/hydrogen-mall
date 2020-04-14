@@ -2,7 +2,7 @@ var orderBox=new Vue({
     el:'#orderBox',
     data:{
         orders:[]
-//     "data": [
+//     [
 //     {
 //         "id": 32,
 //         "userId": 2,
@@ -85,6 +85,9 @@ var orderBox=new Vue({
             }).catch(function (reason) {
                 $util.toast(reason);
             });
+        },
+        goPay:function (orderSn) {
+            window.location.href=Api.host.page+"/USER/pay-method.html?orderSn="+orderSn;
         }
     }
 });
