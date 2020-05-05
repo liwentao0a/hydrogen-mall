@@ -19,3 +19,6 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://root:root@localhost:9001/eureka/
+
+server:
+  port: 7031

@@ -20,7 +20,5 @@ eureka:
     service-url:
       defaultZone: http://root:root@localhost:9001/eureka/
 
-#settings:
-#  error:
-#    redirect: true
-#    redirectUrl: http://localhost:9021/page
+server:
+  port: 7001
