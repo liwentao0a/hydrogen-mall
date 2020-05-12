@@ -6,6 +6,7 @@ if (username != ''){
 $('#loginForm').on('submit',function (e) {
     e.preventDefault();
     console.log($(this).serializeJSON());
+    $util.toast("正在登录，请稍等。。。")
     $api.loginForUser($(this).serialize())
         .then(function (value) {
         var data = value.data;
