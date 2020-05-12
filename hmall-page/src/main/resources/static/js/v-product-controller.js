@@ -197,7 +197,8 @@ var productInfoBox=new Vue({
                         $util.toast(data.message);
                     }
                 }).catch(function (reason) {
-                    $util.toast(reason);
+                    // $util.toast(reason);
+                    console.log(reason);
                 });
             }
             for (var i=0;i<$this.skus.length;i++){
@@ -278,6 +279,16 @@ var productInfoBox=new Vue({
         },
         addToCartBtnClick:function () {
             var $this=this;
+            try {
+                let skuStock = $this.skuIdToSkuStockMap.get($this.currentSKU.id);
+                if (skuStock==undefined||skuStock<=0){
+                    $util.toast("请刷新重试，库存错误");
+                    return;
+                }
+            }catch (e) {
+                $util.toast("请刷新重试，库存错误："+e);
+                return;
+            }
             $api.saveCartItem($this.currentSKU.id,$this.quantity).then(function (value) {
                 var data = value.data;
                 if (data.code==Api.code.SUCCESS){

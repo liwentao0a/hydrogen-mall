@@ -9,7 +9,6 @@ import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
-import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 import java.util.concurrent.TimeUnit;
@@ -23,8 +22,6 @@ class HmallOrderServiceApplicationTests {
     private RedisTemplate<String,Object> template;
     @Autowired
     private JedisPool jedisPool;
-    @Autowired
-    private Jedis jedis;
     @Autowired
     private RabbitTemplate rabbitTemplate;
     @Autowired
